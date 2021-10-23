@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.benyq.guochatapi.orm.dao.UserDao">
+
+    <insert id="register" parameterType="com.benyq.guochatapi.orm.param.RegisterParam" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        t_user(nick,phone, pwd, uid, update_time, create_time)
+        values(#{nick,jdbcType=VARCHAR},
+        #{phone,jdbcType=VARCHAR},
+        #{uid,jdbcType=VARCHAR},
+        #{pwd,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=BIGINT},
+        #{createTime,jdbcType=BIGINT}
+        )
+    </insert>
+
+    <select id="login" resultType="com.benyq.guochatapi.orm.entity.LoginEntity">
+        select nick, id, uid , phone, gender, avatar from t_user where phone=#{phone, jdbcType=VARCHAR} and pwd=#{pwd,jdbcType=VARCHAR};
+    </select>
+
+    <select id="checkUserExist" resultType="java.lang.Long" parameterType="java.lang.String">
+        select id from t_user where phone = #{phone, jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,68 @@
+buildscript {
+//    buildscript中的声明是gradle脚本自身需要使用的资源。
+//    可以声明的资源包括依赖项、第三方插件、maven仓库地址等。
+    repositories {
+        maven {  url "https://plugins.gradle.org/m2/"    }
+    }
+
+    dependencies {
+//        gradle-docker插件用的较多的有三个 推荐大家使用这个 还有另外两个都两年没更新了实在是不推荐使用了
+        classpath 'gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.20.0'
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.3.1.RELEASE"
+    }
+
+}
+
+
+plugins {
+    id 'org.springframework.boot' version '2.4.0'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'com.benyq'
+version = '0.0.1'
+sourceCompatibility = '1.8'
+
+apply plugin: 'com.palantir.docker'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4'
+    implementation 'com.baomidou:mybatis-plus:2.1.8'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    implementation 'com.alibaba:fastjson:1.2.73'
+
+    runtimeOnly 'mysql:mysql-connector-java'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.3.1.RELEASE'
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    implementation 'com.qiniu:qiniu-java-sdk:7.4.+'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+docker {
+//    dependsOn build
+    name "${bootJar.project.group}/${bootJar.baseName}"
+    files bootJar.archivePath
+    buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
+//    定义供Dockerfile使用的变量 JAR_FILE
+}
