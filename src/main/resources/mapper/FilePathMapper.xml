@@ -3,7 +3,7 @@
 <mapper namespace="com.benyq.guochatapi.orm.dao.FilePathDao">
 
     <insert id="addPath" parameterType="com.benyq.guochatapi.orm.param.AddFilePathParam" useGeneratedKeys="true" keyProperty="id">
-        insert into t_file_path(`path`, `type`, update_time, create_time) values(
+        insert into t_file_path(`path`, `type`, update_time, created_time) values(
         #{filePath,jdbcType=TINYINT},
         #{type,jdbcType=VARCHAR},
         #{updateTime,jdbcType=BIGINT},

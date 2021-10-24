@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.benyq.guochatapi.orm.dao.ContractDao">
+
+    <select id="getAllContracts" resultType="com.benyq.guochatapi.orm.entity.ContractEntity">
+        select t_contract.id, t_contract.uid, t_contract.contract_id as contractId, t_contract.remark, t_user.avatar, t_user.gender, t_user.nick
+        from t_contract left join t_user
+        where uid = #{id, jdbcType=VARCHAR}
+          and status = 1;
+    </select>
+
+
+</mapper>

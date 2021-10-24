@@ -19,6 +19,9 @@ public class FileService {
     @Autowired
     FilePathDao filePathDao;
 
+    @Autowired
+    FileService fileService;
+
     public Result<FilePathEntity> uploadImg(HttpServletRequest req,
                                             MultipartHttpServletRequest multiReq) {
 

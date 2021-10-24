@@ -35,6 +35,14 @@ public class UserController {
         return "info-" + uid;
     }
 
+
+    @PostMapping("edit_nick")
+    @ApiMethod("")
+    public Result<String> editNick(@PathVariable("id") String id, @RequestParam("nick") String nick) {
+        return userService.editNick(id, nick);
+    }
+
+
     //虽然并不需要特意检查token，但还是开了一个接口意思一下
     @GetMapping("check-token")
     @ApiMethod("检查token")

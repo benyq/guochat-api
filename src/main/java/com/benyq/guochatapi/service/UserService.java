@@ -8,9 +8,12 @@ import com.benyq.guochatapi.orm.entity.Result;
 import com.benyq.guochatapi.orm.param.RegisterParam;
 import com.benyq.guochatapi.utils.DateUtil;
 import com.benyq.guochatapi.utils.MD5Util;
+import com.benyq.guochatapi.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -24,7 +27,7 @@ public class UserService {
     JwtConfig jwtConfig;
 
     public Result<LoginEntity> login(String phone, String pwd) {
-        LoginEntity loginEntity = userDao.login(phone, MD5Util.stringToMD5(pwd));
+        LoginEntity loginEntity = userDao.login(phone, UserUtil.saltEncryptionPwd(pwd));
         if (loginEntity == null) {
             return Result.error(ErrorCode.ERROR_LOGIN);
         }
@@ -42,6 +45,7 @@ public class UserService {
         }
         param.setNick("果聊用户_" + param.getPhone());
         param.setUid("chat_id_" + DateUtil.dateToHexString());
+        param.setPwd(UserUtil.saltEncryptionPwd(param.getPwd()));
         userDao.register(param);
         LoginEntity entity = new LoginEntity();
         entity.setId(String.valueOf(param.getId()));
@@ -51,4 +55,10 @@ public class UserService {
         entity.setNick(param.getNick());
         return Result.success(entity);
     }
+
+    public Result<String> editNick(String uid, String nick) {
+        long effectCount = userDao.editNick(uid, nick, System.currentTimeMillis());
+        return effectCount > 0 ? Result.success("success") : Result.error(ErrorCode.EDIT_NICK_ERROR);
+    }
+
 }

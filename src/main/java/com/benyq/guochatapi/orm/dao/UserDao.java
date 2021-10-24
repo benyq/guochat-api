@@ -12,4 +12,7 @@ public interface UserDao {
     void register(RegisterParam param);
 
     Long checkUserExist(String phone);
+
+    Long editNick(String id, String nick, long updateTime);
+
 }

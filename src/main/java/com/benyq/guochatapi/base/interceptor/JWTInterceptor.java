@@ -28,7 +28,7 @@ public class JWTInterceptor implements HandlerInterceptor {
         }
 
         //设置 uid, 后面controller中可能会用到，这样请求时不用传uid了
-        request.setAttribute("uid", claims.getSubject() != null ? claims.getSubject() : "");
+        request.setAttribute("id", claims.getSubject() != null ? claims.getSubject() : "");
         return true;
     }
 
