@@ -5,6 +5,8 @@ public enum  ErrorCode {
     ERROR_TOKEN("token已失效，请重新登陆", 2),
     EXIST_USER("账号已存在，请登陆", 3),
     EDIT_NICK_ERROR("修改昵称失败", 4),
+    CONTRACT_EXISTS("联系人已存在", 5),
+    APPLY_CONTRACT_NOT_EXISTS("联系人申请记录不存在", 5),
     UPLOAD_EMPTY_FILE("上传空文件", 6);
 
 

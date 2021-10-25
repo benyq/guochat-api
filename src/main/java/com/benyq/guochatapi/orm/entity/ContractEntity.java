@@ -1,6 +1,9 @@
 package com.benyq.guochatapi.orm.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
+
+import java.beans.Transient;
 
 /**
  * @author benyq
@@ -17,4 +20,6 @@ public class ContractEntity {
     private String remark;
     private int gender;
     private String avatar;
+    @JSONField(serialize = false)
+    private int status;
 }

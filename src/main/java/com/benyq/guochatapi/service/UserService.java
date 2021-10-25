@@ -31,7 +31,7 @@ public class UserService {
         if (loginEntity == null) {
             return Result.error(ErrorCode.ERROR_LOGIN);
         }
-        String token = jwtConfig.getToken(loginEntity.getUid());
+        String token = jwtConfig.getToken(loginEntity.getId());
         loginEntity.setToken(token);
         return Result.success(loginEntity);
     }
@@ -57,8 +57,8 @@ public class UserService {
     }
 
     public Result<String> editNick(String uid, String nick) {
-        long effectCount = userDao.editNick(uid, nick, System.currentTimeMillis());
-        return effectCount > 0 ? Result.success("success") : Result.error(ErrorCode.EDIT_NICK_ERROR);
+        long effectRows = userDao.editNick(uid, nick, System.currentTimeMillis());
+        return effectRows > 0 ? Result.success("success") : Result.error(ErrorCode.EDIT_NICK_ERROR);
     }
 
 }

@@ -33,8 +33,8 @@ public class Swagger2 {
 
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("Market API Doc")
-                .description("Springboot 实现的市场后台 by benyq")
+                .title("GuoChat API Doc")
+                .description("Springboot 实现的果聊后台 by benyq")
                 .version("1.0")
                 .build();
     }

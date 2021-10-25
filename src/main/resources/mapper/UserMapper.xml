@@ -10,7 +10,7 @@
                 #{pwd,jdbcType=VARCHAR},
                 #{uid,jdbcType=VARCHAR},
                 #{updateTime,jdbcType=BIGINT},
-                #{createTime,jdbcType=BIGINT})
+                #{createTime,jdbcType=BIGINT});
     </insert>
 
     <select id="login" resultType="com.benyq.guochatapi.orm.entity.LoginEntity">
@@ -23,7 +23,7 @@
     <select id="checkUserExist" resultType="java.lang.Long" parameterType="java.lang.String">
         select id
         from t_user
-        where phone = #{phone, jdbcType=VARCHAR}
+        where phone = #{phone, jdbcType=VARCHAR};
     </select>
 
     <update id="editNick">

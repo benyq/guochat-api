@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 腾讯云数据库
+ Source Server         : guochat
  Source Server Type    : MySQL
  Source Server Version : 50736
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 24/10/2021 18:54:44
+ Date: 25/10/2021 15:17:11
 */
 
 SET NAMES utf8mb4;
@@ -26,9 +26,11 @@ CREATE TABLE `t_contract`  (
   `uid` int(10) NOT NULL COMMENT '联系人所有人id',
   `contract_id` int(11) NOT NULL COMMENT '联系人id',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 2 COMMENT '联系人状态， 1 好友， 2 等待验证',
   `created_time` bigint(20) NULL DEFAULT NULL,
   `update_time` bigint(20) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`uid`, `contract_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("login")
+    @PostMapping("login")
     @ApiMethod("登陆")
     public Result<LoginEntity> login(@RequestParam("phone") String phone, @RequestParam("pwd") String pwd) {
         return userService.login(phone, pwd);
@@ -36,9 +36,9 @@ public class UserController {
     }
 
 
-    @PostMapping("edit_nick")
-    @ApiMethod("")
-    public Result<String> editNick(@PathVariable("id") String id, @RequestParam("nick") String nick) {
+    @PostMapping("edit-nick")
+    @ApiMethod("修改昵称")
+    public Result<String> editNick(@RequestAttribute("id") String id, @RequestParam("nick") String nick) {
         return userService.editNick(id, nick);
     }
 
