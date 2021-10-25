@@ -72,14 +72,9 @@ public class WebSocketServer {
      * @throws IOException
      */
     @OnMessage
-    public void onMessage(String message) throws IOException{
-        for (Session session: sessionPools.values()) {
-            try {
-                sendMessage(session, message);
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-        }
+    public void onMessage(Session session, String message) throws IOException{
+        System.out.println("session: " + session.getId());
+        System.out.println("message: " + message);
     }
 
     /**
