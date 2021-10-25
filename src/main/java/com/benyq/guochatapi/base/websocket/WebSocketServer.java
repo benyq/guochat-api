@@ -1,5 +1,7 @@
 package com.benyq.guochatapi.base.websocket;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -44,15 +46,6 @@ public class WebSocketServer {
      */
     @OnOpen
     public void onOpen(Session session){
-        String userName = session.getId();
-        sessionPools.put(userName, session);
-        addOnlineCount();
-        System.out.println(userName + "加入webSocket！当前人数为" + online);
-        try {
-            sendMessage(session, "欢迎" + userName + "加入连接！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -73,8 +66,24 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(Session session, String message) throws IOException{
+
         System.out.println("session: " + session.getId());
         System.out.println("message: " + message);
+
+        if (message == null) {
+            return;
+        }
+
+        WSMessage wsMessage = JSON.parseObject(message, WSMessage.class);
+        if (wsMessage.getType() == WSMessage.TYPE_HEART) {
+            System.out.println("message: 心跳包");
+        }else if (wsMessage.getType() == WSMessage.TYPE_UID) {
+            sessionPools.put(wsMessage.getData(), session);
+            addOnlineCount();
+            sendMessage(session, "chat: " + wsMessage.getData());
+            System.out.println(session.getId() + "加入webSocket！当前人数为" + online);
+        }
+
     }
 
     /**
@@ -90,12 +99,12 @@ public class WebSocketServer {
 
     /**
      * 给指定用户发送消息
-     * @param userName 用户名
+     * @param uid 用户名
      * @param message 消息
      * @throws IOException
      */
-    public void sendInfo(String userName, String message){
-        Session session = sessionPools.get(userName);
+    public void sendMessage(String uid, String message){
+        Session session = sessionPools.get(uid);
         try {
             sendMessage(session, message);
         }catch (Exception e){

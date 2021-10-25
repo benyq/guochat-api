@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("info")
     @ApiMethod("用户信息")
-    public String info(@RequestAttribute("uid") String uid) {
+    public String info(@RequestAttribute("id") String uid) {
         return "info-" + uid;
     }
 
