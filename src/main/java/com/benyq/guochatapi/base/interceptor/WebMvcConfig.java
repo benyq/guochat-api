@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-@Component
+//@Component
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
