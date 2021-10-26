@@ -15,4 +15,6 @@ public interface UserDao {
 
     Long editNick(String id, String nick, long updateTime);
 
+    Long editAvatar(String id, long fileId, long updateTime);
+
 }

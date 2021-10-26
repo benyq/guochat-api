@@ -6,8 +6,6 @@ buildscript {
     }
 
     dependencies {
-//        gradle-docker插件用的较多的有三个 推荐大家使用这个 还有另外两个都两年没更新了实在是不推荐使用了
-        classpath 'gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.20.0'
         classpath "org.springframework.boot:spring-boot-gradle-plugin:2.3.1.RELEASE"
     }
 
@@ -23,8 +21,6 @@ plugins {
 group = 'com.benyq'
 version = '0.0.1'
 sourceCompatibility = '1.8'
-
-apply plugin: 'com.palantir.docker'
 
 repositories {
     mavenCentral()
@@ -56,12 +52,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-}
-
-docker {
-//    dependsOn build
-    name "${bootJar.project.group}/${bootJar.baseName}"
-    files bootJar.archivePath
-    buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
-//    定义供Dockerfile使用的变量 JAR_FILE
 }

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class FilePathEntity {
-    private String fileId;
+    private String filePath;
     private int type;
 }

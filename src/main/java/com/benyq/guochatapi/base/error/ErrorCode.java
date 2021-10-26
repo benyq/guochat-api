@@ -7,7 +7,8 @@ public enum  ErrorCode {
     EDIT_NICK_ERROR("修改昵称失败", 4),
     CONTRACT_EXISTS("联系人已存在", 5),
     APPLY_CONTRACT_NOT_EXISTS("联系人申请记录不存在", 5),
-    UPLOAD_EMPTY_FILE("上传空文件", 6);
+    UPLOAD_EMPTY_FILE("上传空文件", 6),
+    UPLOAD_FILE_ERROR("上传文件失败", 7);
 
 
 

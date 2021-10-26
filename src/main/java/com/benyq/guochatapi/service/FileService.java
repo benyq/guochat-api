@@ -2,12 +2,15 @@ package com.benyq.guochatapi.service;
 
 import com.benyq.guochatapi.base.error.ErrorCode;
 import com.benyq.guochatapi.orm.dao.FilePathDao;
+import com.benyq.guochatapi.orm.dao.UserDao;
 import com.benyq.guochatapi.orm.entity.FilePathEntity;
 import com.benyq.guochatapi.orm.entity.Result;
 import com.benyq.guochatapi.orm.param.AddFilePathParam;
 import com.benyq.guochatapi.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -18,33 +21,39 @@ public class FileService {
 
     @Autowired
     FilePathDao filePathDao;
-
     @Autowired
-    FileService fileService;
+    UserDao userDao;
 
-    public Result<FilePathEntity> uploadImg(HttpServletRequest req,
-                                            MultipartHttpServletRequest multiReq) {
+    @Transactional
+    public Result<FilePathEntity> uploadAvatar(String id, MultipartHttpServletRequest multiReq) {
 
-        MultipartFile multipartFile = multiReq.getFile("img");
+        MultipartFile multipartFile = multiReq.getFile("avatar");
         if (multipartFile == null) {
             return Result.error(ErrorCode.UPLOAD_EMPTY_FILE);
         }
 
-        return Result.success(addPath(multipartFile, 0));
-
-    }
-
-    private FilePathEntity addPath(MultipartFile multipartFile, int type) {
         String filePath = FileUtil.saveUploadedImg(multipartFile);
         AddFilePathParam pathParam = new AddFilePathParam();
-        pathParam.setType(type);
+        pathParam.setType(1);
         pathParam.setFilePath(filePath);
-        filePathDao.addPath(pathParam);
+        long effectRows = filePathDao.addPath(pathParam);
+        if (effectRows <= 0) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorCode.UPLOAD_FILE_ERROR);
+        }
+        effectRows = userDao.editAvatar(id, pathParam.getId(), System.currentTimeMillis());
+
+        if (effectRows <= 0) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorCode.UPLOAD_FILE_ERROR);
+        }
 
         FilePathEntity entity = new FilePathEntity();
-        entity.setFileId(String.valueOf(pathParam.getId()));
-        entity.setType(type);
-        return entity;
+        entity.setFilePath(filePath);
+        entity.setType(1);
+
+        return Result.success(entity);
     }
+
 
 }
