@@ -1,7 +1,6 @@
 package com.benyq.guochatapi.base.error;
 
 import com.benyq.guochatapi.orm.entity.Result;
-import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,8 +55,8 @@ public class ErrorControllerAdvice {
      * @param ex
      * @return
      */
-    @ExceptionHandler(value = MarketException.class)
-    public Map<String, Object> errorHandler(MarketException ex) {
+    @ExceptionHandler(value = ChatException.class)
+    public Map<String, Object> errorHandler(ChatException ex) {
         Map<String, Object> map = new HashMap<>();
         map.put("errorCode", ex.getErrorCode());
         map.put("errorMsg", ex.getMessage());

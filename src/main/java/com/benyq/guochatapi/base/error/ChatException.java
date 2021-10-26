@@ -1,9 +1,9 @@
 package com.benyq.guochatapi.base.error;
 
-public class MarketException extends Exception{
+public class ChatException extends Exception{
     private int errorCode;
 
-    public MarketException(String message, int errorCode) {
+    public ChatException(String message, int errorCode) {
         super(message);
         this.errorCode = errorCode;
     }
