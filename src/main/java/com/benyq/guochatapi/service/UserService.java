@@ -3,19 +3,17 @@ package com.benyq.guochatapi.service;
 import com.benyq.guochatapi.base.error.ErrorCode;
 import com.benyq.guochatapi.base.interceptor.JwtConfig;
 import com.benyq.guochatapi.orm.dao.UserDao;
-import com.benyq.guochatapi.orm.entity.LoginEntity;
+import com.benyq.guochatapi.orm.entity.ContractEntity;
+import com.benyq.guochatapi.orm.entity.UserEntity;
 import com.benyq.guochatapi.orm.entity.Result;
 import com.benyq.guochatapi.orm.param.RegisterParam;
 import com.benyq.guochatapi.utils.DateUtil;
-import com.benyq.guochatapi.utils.MD5Util;
 import com.benyq.guochatapi.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -26,8 +24,8 @@ public class UserService {
     @Autowired
     JwtConfig jwtConfig;
 
-    public Result<LoginEntity> login(String phone, String pwd) {
-        LoginEntity loginEntity = userDao.login(phone, UserUtil.saltEncryptionPwd(pwd));
+    public Result<UserEntity> login(String phone, String pwd) {
+        UserEntity loginEntity = userDao.login(phone, UserUtil.saltEncryptionPwd(pwd));
         if (loginEntity == null) {
             return Result.error(ErrorCode.ERROR_LOGIN);
         }
@@ -37,7 +35,7 @@ public class UserService {
     }
 
     @Transactional
-    public Result<LoginEntity> register(RegisterParam param){
+    public Result<UserEntity> register(RegisterParam param){
         Long existUid = userDao.checkUserExist(param.getPhone());
         if (existUid != null) {
             //已存在
@@ -47,10 +45,10 @@ public class UserService {
         param.setUid("chat_id_" + DateUtil.dateToHexString());
         param.setPwd(UserUtil.saltEncryptionPwd(param.getPwd()));
         userDao.register(param);
-        LoginEntity entity = new LoginEntity();
+        UserEntity entity = new UserEntity();
         entity.setId(String.valueOf(param.getId()));
-        entity.setUid(param.getUid());
-        entity.setToken(jwtConfig.getToken(entity.getUid()));
+        entity.setChatNo(param.getUid());
+        entity.setToken(jwtConfig.getToken(entity.getId()));
         entity.setPhone(param.getPhone());
         entity.setNick(param.getNick());
         return Result.success(entity);

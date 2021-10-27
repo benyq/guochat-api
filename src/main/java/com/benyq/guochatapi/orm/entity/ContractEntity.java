@@ -14,8 +14,9 @@ import java.beans.Transient;
 @Data
 public class ContractEntity {
     private long id;
-    private String uid;
-    private String contractId;
+    private String uid;//联系人所有人id
+    private String contractId;//联系人id
+    private String chatNo;//联系人果聊号
     private String nick;
     private String remark;
     private int gender;

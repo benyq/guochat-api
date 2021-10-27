@@ -1,8 +1,9 @@
 package com.benyq.guochatapi.controller;
 
 import com.benyq.guochatapi.base.annotation.ApiMethod;
+import com.benyq.guochatapi.orm.entity.ContractEntity;
 import com.benyq.guochatapi.orm.entity.FilePathEntity;
-import com.benyq.guochatapi.orm.entity.LoginEntity;
+import com.benyq.guochatapi.orm.entity.UserEntity;
 import com.benyq.guochatapi.orm.entity.Result;
 import com.benyq.guochatapi.orm.param.RegisterParam;
 import com.benyq.guochatapi.service.FileService;
@@ -24,13 +25,13 @@ public class UserController {
 
     @PostMapping("login")
     @ApiMethod("登陆")
-    public Result<LoginEntity> login(@RequestParam("phone") String phone, @RequestParam("pwd") String pwd) {
+    public Result<UserEntity> login(@RequestParam("phone") String phone, @RequestParam("pwd") String pwd) {
         return userService.login(phone, pwd);
     }
 
     @PostMapping("register")
     @ApiMethod("注册")
-    public Result<LoginEntity> register(@Valid @RequestBody RegisterParam param) {
+    public Result<UserEntity> register(@Valid @RequestBody RegisterParam param) {
         return userService.register(param);
     }
 

@@ -7,10 +7,9 @@ import com.benyq.guochatapi.orm.entity.Result;
 import com.benyq.guochatapi.orm.param.ApplyContractParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author benyq
@@ -24,7 +23,7 @@ public class ContractService {
     @Autowired
     ContractDao contractDao;
 
-    public Result<List<ContractEntity>> getAllContracts(String id){
+    public Result<List<ContractEntity>> getAllContracts(String id) {
         return Result.success(contractDao.getAllContracts(id));
     }
 
@@ -46,8 +45,9 @@ public class ContractService {
 
     /**
      * 联系人申请处理
+     *
      * @param contractId
-     * @param status 0 拒绝， 1 同意
+     * @param status     0 拒绝， 1 同意
      * @return
      */
     public Result<String> applyContractReply(String contractId, int status) {
@@ -61,4 +61,18 @@ public class ContractService {
         return Result.success("success");
     }
 
+
+    public Result<ContractEntity> searchContract(String uid, String key) {
+        String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+        ContractEntity userContract = Pattern.matches(regex, key) ? contractDao.searchContractByPhone(key) : contractDao.searchContractByChatNo(key);
+        if (userContract == null) {
+            return Result.error(ErrorCode.USER_NOT_EXISTS);
+        }
+        ContractEntity contractEntity = contractDao.queryContract(uid, userContract.getContractId());
+        if (contractEntity != null && contractEntity.getStatus() == 1) {
+            userContract.setUid(contractEntity.getUid());
+            userContract.setRemark(contractEntity.getRemark());
+        }
+        return Result.success(userContract);
+    }
 }

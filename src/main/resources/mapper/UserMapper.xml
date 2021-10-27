@@ -4,7 +4,7 @@
 
     <insert id="register" parameterType="com.benyq.guochatapi.orm.param.RegisterParam" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO t_user(nick, phone, pwd, uid, update_time, created_time)
+        INSERT INTO t_user(nick, phone, pwd, chat_no, update_time, created_time)
         values (#{nick,jdbcType=VARCHAR},
                 #{phone,jdbcType=VARCHAR},
                 #{pwd,jdbcType=VARCHAR},
@@ -13,8 +13,8 @@
                 #{createTime,jdbcType=BIGINT});
     </insert>
 
-    <select id="login" resultType="com.benyq.guochatapi.orm.entity.LoginEntity">
-        select nick, t_user.id, uid, phone, gender, t_file_path.path as avatar
+    <select id="login" resultType="com.benyq.guochatapi.orm.entity.UserEntity">
+        select nick, t_user.id, chat_no as chatNo, phone, gender, t_file_path.path as avatar
         from t_user left join t_file_path on t_file_path.id = t_user.avatar
         where phone = #{phone, jdbcType=VARCHAR}
           and pwd = #{pwd,jdbcType=VARCHAR};

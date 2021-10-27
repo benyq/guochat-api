@@ -28,6 +28,17 @@ public class ContractController {
         return contractService.getAllContracts(id);
     }
 
+    /**
+     * 搜索联系人
+     * @param key 可以是 手机号，也可以 果聊id
+     * @return
+     */
+    @GetMapping("search-contract")
+    @ApiMethod("搜索联系人")
+    public Result<ContractEntity> searchContract(@RequestAttribute("id") String id, @RequestParam("key") String key) {
+        return contractService.searchContract(id, key);
+    }
+
     @PostMapping("apply-contract")
     @ApiMethod("联系人申请")
     public Result<String> applyContract(@RequestAttribute("id") String id, @RequestParam("apply_id") String applyId) {

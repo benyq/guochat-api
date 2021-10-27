@@ -8,7 +8,8 @@ public enum  ErrorCode {
     CONTRACT_EXISTS("联系人已存在", 5),
     APPLY_CONTRACT_NOT_EXISTS("联系人申请记录不存在", 5),
     UPLOAD_EMPTY_FILE("上传空文件", 6),
-    UPLOAD_FILE_ERROR("上传文件失败", 7);
+    UPLOAD_FILE_ERROR("上传文件失败", 7),
+    USER_NOT_EXISTS("该用户不存在", 8);
 
 
 

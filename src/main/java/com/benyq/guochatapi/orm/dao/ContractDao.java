@@ -25,4 +25,7 @@ public interface ContractDao {
 
     long applyContractAgree(String id);
     long applyContractRefuse(String id);
+
+    ContractEntity searchContractByPhone(String phone);
+    ContractEntity searchContractByChatNo(String chatNo);
 }
