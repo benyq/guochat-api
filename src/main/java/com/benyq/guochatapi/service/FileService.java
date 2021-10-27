@@ -1,6 +1,5 @@
 package com.benyq.guochatapi.service;
 
-import com.benyq.guochatapi.base.ServerConfig;
 import com.benyq.guochatapi.base.error.ErrorCode;
 import com.benyq.guochatapi.orm.dao.FilePathDao;
 import com.benyq.guochatapi.orm.dao.UserDao;
@@ -15,8 +14,6 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Service
 public class FileService {
 
@@ -24,9 +21,6 @@ public class FileService {
     FilePathDao filePathDao;
     @Autowired
     UserDao userDao;
-    @Autowired
-    ServerConfig serverConfig;
-
 
     @Transactional
     public Result<FilePathEntity> uploadAvatar(String id, MultipartHttpServletRequest multiReq) {
@@ -53,7 +47,7 @@ public class FileService {
         }
 
         FilePathEntity entity = new FilePathEntity();
-        entity.setFilePath(serverConfig.getUrl() + filePath);
+        entity.setFilePath(filePath);
         entity.setType(1);
 
         return Result.success(entity);

@@ -1,6 +1,5 @@
 package com.benyq.guochatapi.controller;
 
-import com.benyq.guochatapi.base.ServerConfig;
 import com.benyq.guochatapi.base.annotation.ApiMethod;
 import com.benyq.guochatapi.orm.entity.FilePathEntity;
 import com.benyq.guochatapi.orm.entity.LoginEntity;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -23,8 +21,6 @@ public class UserController {
     UserService userService;
     @Autowired
     FileService fileService;
-    @Autowired
-    ServerConfig serverConfig;
 
     @PostMapping("login")
     @ApiMethod("登陆")
@@ -41,7 +37,7 @@ public class UserController {
     @GetMapping("info")
     @ApiMethod("用户信息")
     public String info(@RequestParam("id") String uid) {
-        return "info-" + serverConfig.getUrl();
+        return "info-";
     }
 
 
