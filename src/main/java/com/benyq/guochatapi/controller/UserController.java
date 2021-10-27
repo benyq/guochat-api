@@ -1,5 +1,6 @@
 package com.benyq.guochatapi.controller;
 
+import com.benyq.guochatapi.base.ServerConfig;
 import com.benyq.guochatapi.base.annotation.ApiMethod;
 import com.benyq.guochatapi.orm.entity.FilePathEntity;
 import com.benyq.guochatapi.orm.entity.LoginEntity;
@@ -22,7 +23,8 @@ public class UserController {
     UserService userService;
     @Autowired
     FileService fileService;
-
+    @Autowired
+    ServerConfig serverConfig;
 
     @PostMapping("login")
     @ApiMethod("登陆")
@@ -38,8 +40,8 @@ public class UserController {
 
     @GetMapping("info")
     @ApiMethod("用户信息")
-    public String info(@RequestAttribute("id") String uid) {
-        return "info-" + uid;
+    public String info(@RequestParam("id") String uid) {
+        return "info-" + serverConfig.getUrl();
     }
 
 
@@ -50,10 +52,9 @@ public class UserController {
     }
 
 
-    @ApiMethod("上传图片文件，返回id")
+    @ApiMethod("上传头像")
     @PostMapping("upload-avatar")
-//    public Result<FilePathEntity> uploadAvatar(@RequestAttribute("id") String id,
-    public Result<FilePathEntity> uploadAvatar(@RequestParam("id") String id,
+    public Result<FilePathEntity> uploadAvatar(@RequestAttribute("id") String id,
                                                MultipartHttpServletRequest multiReq) {
         return fileService.uploadAvatar(id, multiReq);
     }

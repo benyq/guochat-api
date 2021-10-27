@@ -1,5 +1,6 @@
 package com.benyq.guochatapi.service;
 
+import com.benyq.guochatapi.base.ServerConfig;
 import com.benyq.guochatapi.base.error.ErrorCode;
 import com.benyq.guochatapi.orm.dao.FilePathDao;
 import com.benyq.guochatapi.orm.dao.UserDao;
@@ -23,6 +24,9 @@ public class FileService {
     FilePathDao filePathDao;
     @Autowired
     UserDao userDao;
+    @Autowired
+    ServerConfig serverConfig;
+
 
     @Transactional
     public Result<FilePathEntity> uploadAvatar(String id, MultipartHttpServletRequest multiReq) {
@@ -49,7 +53,7 @@ public class FileService {
         }
 
         FilePathEntity entity = new FilePathEntity();
-        entity.setFilePath(filePath);
+        entity.setFilePath(serverConfig.getUrl() + filePath);
         entity.setType(1);
 
         return Result.success(entity);
