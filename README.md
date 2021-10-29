@@ -19,7 +19,7 @@ docker run -itd -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:5
 ###docker mysql shell
 sudo docker exec -it mysql-latest bash
 ###docker springboot 启动
-docker run -d -p 8080:8080 -v /var/www/html/file:/file guochatdocker
+docker run --name=guochat -d -p 8080:8080 -v /var/www/html/file:/file guochatdocker
 -d参数是让容器后台运行  
 -p 是做端口映射，此时将服务器中的8080端口映射到容器中的8080(项目中端口配置的是8080)端口
 -v 是目录映射
