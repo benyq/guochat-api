@@ -4,15 +4,12 @@ import lombok.Data;
 
 /**
  * @author benyq
- * @time 2021/10/25
+ * @time 2021/10/30
  * @e-mail 1520063035@qq.com
  * @note
  */
 @Data
-public class MessageEntity {
-    private String fromId;
-    private String toId;
-    private String msg;
+public class ChatFileEntity {
     private int type;
-    private long sendTime;
+    private String path;
 }

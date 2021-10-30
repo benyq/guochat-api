@@ -11,13 +11,39 @@ import java.io.IOException;
 public class FileUtil {
 
     private static final String ROOT_PATH = "file/";
-    private static final String IMG_PATH = ROOT_PATH + "img/";
+    private static final String AVATAR_PATH = ROOT_PATH + "avatar/";
+    private static final String VIDEO_PATH = ROOT_PATH + "chat/video/";
+    //其他文件
+    private static final String FILE_PATH = ROOT_PATH + "chat/file/";
+    private static final String IMG_PATH = ROOT_PATH + "chat/img/";
+    private static final String VOICE_PATH = ROOT_PATH + "chat/voice/";
 
-    public static String saveUploadedImg(MultipartFile multipartFile) {
-        return saveUploadedImg(multipartFile, null, null);
+    public static String saveAvatarImg(MultipartFile multipartFile) {
+        return saveUploadFile(multipartFile, AVATAR_PATH, null);
     }
 
-    public static String saveUploadedImg(MultipartFile multipartFile, String parentPath, String fileName) {
+    public static String saveChatImg(MultipartFile multipartFile) {
+        return saveUploadFile(multipartFile, IMG_PATH, null);
+    }
+
+    public static String saveChatVideo(MultipartFile multipartFile) {
+        return saveUploadFile(multipartFile, VIDEO_PATH, null);
+    }
+
+    public static String saveChatFile(MultipartFile multipartFile) {
+        return saveUploadFile(multipartFile, FILE_PATH, null);
+    }
+
+    public static String saveChatVoice(MultipartFile multipartFile) {
+        return saveUploadFile(multipartFile, VOICE_PATH, null);
+    }
+
+    private static String saveUploadFile(MultipartFile multipartFile, String parentPath, String fileName) {
+
+        if (multipartFile == null) {
+            return null;
+        }
+
         String uploadFilePath = multipartFile.getOriginalFilename();
         // 截取上传文件的文件名
         String uploadFileName = uploadFilePath.substring(
@@ -29,11 +55,6 @@ public class FileUtil {
         FileOutputStream fos = null;
         FileInputStream fis = null;
 
-        if (StringUtils.hasLength(parentPath)) {
-            parentPath = IMG_PATH + File.separator + parentPath + File.separator;
-        }else {
-            parentPath = IMG_PATH;
-        }
         File parentFile = new File(parentPath);
         if (!parentFile.exists()) {
             parentFile.mkdirs();

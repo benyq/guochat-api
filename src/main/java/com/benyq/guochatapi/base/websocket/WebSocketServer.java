@@ -8,9 +8,12 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * @author benyq
@@ -26,6 +29,9 @@ public class WebSocketServer {
 
     //concurrent包的线程安全Set，用来存放每个客户端对应的WebSocketServer对象。
     private static Map<String,Session> sessionPools = new ConcurrentHashMap<>();
+
+    //消息记录的缓存，暂时保存在内存中
+    private static Map<String, List<String>> chatMessagePools = new ConcurrentHashMap<>();
 
     /**
      * 发送消息方法
@@ -81,6 +87,16 @@ public class WebSocketServer {
             sessionPools.put(wsMessage.getData(), session);
             addOnlineCount();
             sendMessage(session, "chat: " + wsMessage.getData());
+
+            //发送缓存消息
+            List<String> chatMessages = chatMessagePools.get(wsMessage.getData());
+            if (chatMessages != null) {
+                chatMessages.forEach(msg -> {
+                    sendMessage(wsMessage.getData(), msg);
+                });
+                chatMessagePools.remove(wsMessage.getData());
+            }
+
             System.out.println(session.getId() + "加入webSocket！当前人数为" + online);
         }
 
@@ -105,6 +121,17 @@ public class WebSocketServer {
      */
     public void sendMessage(String uid, String message){
         Session session = sessionPools.get(uid);
+
+        //此时对方还未上线，需要缓存聊天记录
+        if (session == null) {
+            List<String> chatMessages = chatMessagePools.get(uid);
+            if (chatMessages == null) {
+                chatMessages = new ArrayList<>();
+            }
+            chatMessages.add(message);
+            return;
+        }
+
         try {
             sendMessage(session, message);
         }catch (Exception e){

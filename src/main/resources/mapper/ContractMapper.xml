@@ -20,7 +20,8 @@
         select id, uid, contract_id as contractId, remark, status from t_contract where id = #{id, jdbcType=VARCHAR};
     </select>
 
-    <insert id="applyContract" parameterType="com.benyq.guochatapi.orm.param.ApplyContractParam">
+    <insert id="applyContract" parameterType="com.benyq.guochatapi.orm.param.ApplyContractParam"  useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO t_contract(uid, contract_id, update_time, created_time)
         values (#{uid,jdbcType=VARCHAR},
                 #{applyId,jdbcType=VARCHAR},

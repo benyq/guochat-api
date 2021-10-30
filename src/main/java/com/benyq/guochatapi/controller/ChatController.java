@@ -3,10 +3,14 @@ package com.benyq.guochatapi.controller;
 import com.alibaba.fastjson.JSON;
 import com.benyq.guochatapi.base.annotation.ApiMethod;
 import com.benyq.guochatapi.base.websocket.WebSocketServer;
+import com.benyq.guochatapi.orm.entity.ChatFileEntity;
 import com.benyq.guochatapi.orm.entity.MessageEntity;
 import com.benyq.guochatapi.orm.entity.Result;
+import com.benyq.guochatapi.service.FileService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
  * @author benyq
@@ -22,6 +26,9 @@ public class ChatController {
     @Autowired
     WebSocketServer webSocketServer;
 
+    @Autowired
+    FileService fileService;
+
     /**
      *
      * @param id 发送者id
@@ -31,7 +38,7 @@ public class ChatController {
      */
     @PostMapping("send-message")
     @ApiMethod("发送消息")
-    public Result<String> sendMessage(@RequestAttribute("id") String id, @RequestParam("to") String toId, @RequestParam("msg") String msg) {
+    public Result<Boolean> sendChatMessage(@RequestAttribute("id") String id, @RequestParam("to") String toId, @RequestParam("msg") String msg) {
         String chatId = "chat-" + toId;
         MessageEntity entity = new MessageEntity();
         entity.setSendTime(System.currentTimeMillis());
@@ -39,7 +46,29 @@ public class ChatController {
         entity.setFromId(id);
         entity.setToId(toId);
         webSocketServer.sendMessage(chatId, JSON.toJSONString(entity));
-        return Result.success("success");
+        return Result.success(true);
+    }
+
+
+    @ApiMethod("发送图片、视频以及其他文件")
+    @PostMapping("send-chat-file")
+    public Result<Boolean> sendChatFile(@RequestAttribute("id") String id, @RequestParam("to") String toId, @RequestParam("type") int type, MultipartHttpServletRequest multiReq) {
+        //先保存文件
+        Result<String> result = fileService.uploadChatFile(multiReq, type);
+        //错误
+        if (result.getErrorCode() != 0) {
+            return Result.error(result.getErrorCode(), result.getErrorMsg());
+        }
+
+        MessageEntity entity = new MessageEntity();
+        entity.setSendTime(System.currentTimeMillis());
+        entity.setType(type);
+        entity.setFromId(id);
+        entity.setToId(toId);
+        entity.setMsg(JSON.toJSONString(entity));
+        String chatId = "chat-" + toId;
+        webSocketServer.sendMessage(chatId, JSON.toJSONString(entity));
+        return Result.success(true);
     }
 
 }

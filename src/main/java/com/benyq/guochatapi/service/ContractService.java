@@ -7,6 +7,7 @@ import com.benyq.guochatapi.orm.entity.Result;
 import com.benyq.guochatapi.orm.param.ApplyContractParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -50,6 +51,7 @@ public class ContractService {
      * @param status     0 拒绝， 1 同意
      * @return
      */
+    @Transactional
     public Result<String> applyContractReply(String contractId, int status) {
         ContractEntity contractEntity = contractDao.queryContractById(contractId);
 
@@ -57,7 +59,17 @@ public class ContractService {
             return Result.error(ErrorCode.APPLY_CONTRACT_NOT_EXISTS);
         }
 
-        long effectRows = status == 0 ? contractDao.applyContractRefuse(contractId) : contractDao.applyContractAgree(contractId);
+        if (status == 0) {
+            contractDao.applyContractRefuse(contractId);
+        }else {
+            contractDao.applyContractAgree(contractId);
+
+            ApplyContractParam applyContractParam = new ApplyContractParam();
+            applyContractParam.setUid(contractEntity.getContractId());
+            applyContractParam.setApplyId(contractEntity.getUid());
+            contractDao.applyContract(applyContractParam);
+            contractDao.applyContractAgree(applyContractParam.getId().toString());
+        }
         return Result.success("success");
     }
 
