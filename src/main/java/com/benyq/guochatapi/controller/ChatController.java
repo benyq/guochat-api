@@ -45,6 +45,7 @@ public class ChatController {
         entity.setMsg(msg);
         entity.setFromId(id);
         entity.setToId(toId);
+        entity.setType(1);
         webSocketServer.sendMessage(chatId, JSON.toJSONString(entity));
         return Result.success(true);
     }
@@ -65,7 +66,7 @@ public class ChatController {
         entity.setType(type);
         entity.setFromId(id);
         entity.setToId(toId);
-        entity.setMsg(JSON.toJSONString(entity));
+        entity.setMsg(result.getData());
         String chatId = "chat-" + toId;
         webSocketServer.sendMessage(chatId, JSON.toJSONString(entity));
         return Result.success(true);

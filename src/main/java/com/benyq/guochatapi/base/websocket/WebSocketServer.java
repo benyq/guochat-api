@@ -28,6 +28,7 @@ public class WebSocketServer {
     private static AtomicInteger online = new AtomicInteger();
 
     //concurrent包的线程安全Set，用来存放每个客户端对应的WebSocketServer对象。
+    // uid 格式 chat-11
     private static Map<String,Session> sessionPools = new ConcurrentHashMap<>();
 
     //消息记录的缓存，暂时保存在内存中
