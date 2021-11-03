@@ -65,8 +65,7 @@ public class ContractController {
      */
     @GetMapping("code-contract")
     @ApiMethod("扫码查询联系人")
-//    public Result<ContractEntity> queryContractByCode(@RequestAttribute("id") String id, @RequestParam("chat-id") String chatId) {
-    public Result<ContractEntity> queryContractByCode(@RequestParam("id") String id, @RequestParam("chat-id") String chatId) {
+    public Result<ContractEntity> queryContractByCode(@RequestAttribute("id") String id, @RequestParam("chat-id") String chatId) {
         if (!chatId.contains("chat-")) {
             return Result.error(ErrorCode.PARAMETER_FORMAT_ERROR);
         }
