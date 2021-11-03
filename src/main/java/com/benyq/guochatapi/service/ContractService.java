@@ -8,6 +8,7 @@ import com.benyq.guochatapi.orm.param.ApplyContractParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -84,6 +85,24 @@ public class ContractService {
         if (contractEntity != null && contractEntity.getStatus() == 1) {
             userContract.setUid(contractEntity.getUid());
             userContract.setRemark(contractEntity.getRemark());
+        }
+        return Result.success(userContract);
+    }
+
+    public Result<ContractEntity> queryContractByCode(String uid, String chatId) {
+        String id = chatId.substring(chatId.indexOf("chat-") + 5);
+        System.out.println("chatId: " + id);
+        ContractEntity userContract = contractDao.searchContractByChatId(id);
+        if (userContract == null) {
+            return Result.error(ErrorCode.USER_NOT_EXISTS);
+        }
+
+        ContractEntity contract = contractDao.queryContract(uid, id);
+        System.out.println(contract);
+        if (contract != null && contract.getStatus() == 1) {
+            userContract.setRemark(contract.getRemark());
+            userContract.setContractId(contract.getContractId());
+            userContract.setUid(contract.getUid());
         }
         return Result.success(userContract);
     }

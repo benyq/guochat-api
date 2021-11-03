@@ -9,7 +9,8 @@ public enum  ErrorCode {
     APPLY_CONTRACT_NOT_EXISTS("联系人申请记录不存在", 5),
     UPLOAD_EMPTY_FILE("上传空文件", 6),
     UPLOAD_FILE_ERROR("上传文件失败", 7),
-    USER_NOT_EXISTS("该用户不存在", 8);
+    USER_NOT_EXISTS("该用户不存在", 8),
+    PARAMETER_FORMAT_ERROR("参数格式错误", 9);
 
 
 

@@ -19,8 +19,8 @@ public interface ContractDao {
 
     long applyContract(ApplyContractParam applyContractParam);
 
+    //这两个方法单纯只是查询t_contract表
     ContractEntity queryContract(String id, String applyId);
-
     ContractEntity queryContractById(String contractId);
 
     long applyContractAgree(String id);
@@ -28,4 +28,5 @@ public interface ContractDao {
 
     ContractEntity searchContractByPhone(String phone);
     ContractEntity searchContractByChatNo(String chatNo);
+    ContractEntity searchContractByChatId(String id);
 }

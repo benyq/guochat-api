@@ -1,6 +1,7 @@
 package com.benyq.guochatapi.controller;
 
 import com.benyq.guochatapi.base.annotation.ApiMethod;
+import com.benyq.guochatapi.base.error.ErrorCode;
 import com.benyq.guochatapi.orm.entity.ContractEntity;
 import com.benyq.guochatapi.orm.entity.Result;
 import com.benyq.guochatapi.service.ContractService;
@@ -56,4 +57,20 @@ public class ContractController {
     public Result<String> refuseContract(@RequestParam("contract_id") String contractId) {
         return contractService.applyContractReply(contractId, 0);
     }
+
+    /**
+     *
+     * @param chatId
+     * @return
+     */
+    @GetMapping("code-contract")
+    @ApiMethod("扫码查询联系人")
+//    public Result<ContractEntity> queryContractByCode(@RequestAttribute("id") String id, @RequestParam("chat-id") String chatId) {
+    public Result<ContractEntity> queryContractByCode(@RequestParam("id") String id, @RequestParam("chat-id") String chatId) {
+        if (!chatId.contains("chat-")) {
+            return Result.error(ErrorCode.PARAMETER_FORMAT_ERROR);
+        }
+        return contractService.queryContractByCode(id, chatId);
+    }
+
 }
