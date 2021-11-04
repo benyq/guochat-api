@@ -60,7 +60,7 @@ public class ContractController {
 
     /**
      *
-     * @param chatId
+     * @param chatId 例如 chat-11
      * @return
      */
     @GetMapping("code-contract")
@@ -72,4 +72,9 @@ public class ContractController {
         return contractService.queryContractByCode(id, chatId);
     }
 
+    @GetMapping("app-contract-record")
+    @ApiMethod("获取联系人申请记录，包括自己申请以及别人向自己申请")
+    public Result<List<ContractEntity>> getApplyContractRecord(@RequestAttribute("id") String id) {
+        return contractService.getApplyContractRecord(id);
+    }
 }

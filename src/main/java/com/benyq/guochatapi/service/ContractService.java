@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -105,5 +106,19 @@ public class ContractService {
             userContract.setUid(contract.getUid());
         }
         return Result.success(userContract);
+    }
+
+
+    public Result<List<ContractEntity>> getApplyContractRecord(String uid) {
+        List<ContractEntity> record1 = contractDao.getApplyContractRecord(uid);
+        List<ContractEntity> record2 = contractDao.getApplyContractRecord(uid);
+        record1.addAll(record2);
+        record1.sort(new Comparator<ContractEntity>() {
+            @Override
+            public int compare(ContractEntity o1, ContractEntity o2) {
+                return (int) (o1.getCreatedTime() - o2.getCreatedTime());
+            }
+        });
+        return Result.success(record1);
     }
 }

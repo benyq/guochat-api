@@ -23,4 +23,5 @@ public class ContractEntity {
     private String avatar;
     @JSONField(serialize = false)
     private int status;
+    private long createdTime;
 }

@@ -29,4 +29,9 @@ public interface ContractDao {
     ContractEntity searchContractByPhone(String phone);
     ContractEntity searchContractByChatNo(String chatNo);
     ContractEntity searchContractByChatId(String id);
+
+    //主动向别人申请
+    List<ContractEntity> getApplyContractRecord(String uid);
+    //别人向自己申请
+    List<ContractEntity> getBeApplyContractRecord(String uid);
 }

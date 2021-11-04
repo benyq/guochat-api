@@ -55,4 +55,22 @@
         where t_user.id = #{id, jdbcType=VARCHAR};
     </select>
 
+    <select id="getApplyContractRecord" resultType="com.benyq.guochatapi.orm.entity.ContractEntity">
+        select t_contract.id, t_contract.uid, t_contract.contract_id as contractId, t_user.chat_no as chatNo, t_contract.remark,
+               t_file_path.path as avatar, t_user.gender, t_user.nick, t_contract.created_time as createdTime
+        from t_contract left join t_user on t_contract.contract_id = t_user.id
+                        left join t_file_path on t_file_path.id = t_user.avatar
+        where t_contract.uid = #{uid, jdbcType=VARCHAR}
+          and t_contract.status = 2;
+    </select>
+
+    <select id="getBeApplyContractRecord" resultType="com.benyq.guochatapi.orm.entity.ContractEntity">
+        select t_contract.id, t_contract.uid, t_contract.contract_id as contractId, t_user.chat_no as chatNo, t_contract.remark,
+               t_file_path.path as avatar, t_user.gender, t_user.nick, t_contract.created_time as createdTime
+        from t_contract left join t_user on t_contract.contract_id = t_user.id
+                        left join t_file_path on t_file_path.id = t_user.avatar
+        where t_contract.contract_id = #{uid, jdbcType=VARCHAR}
+          and t_contract.status = 2;
+    </select>
+
 </mapper>
