@@ -41,8 +41,8 @@ public class UserService {
             //已存在
             return Result.error(ErrorCode.EXIST_USER);
         }
-        param.setNick("果聊用户_" + param.getPhone());
-        param.setUid("chat_id_" + DateUtil.dateToHexString());
+        param.setNick("果聊_" + param.getPhone());
+        param.setUid("chat_" + DateUtil.dateToHexString());
         param.setPwd(UserUtil.saltEncryptionPwd(param.getPwd()));
         userDao.register(param);
         UserEntity entity = new UserEntity();
