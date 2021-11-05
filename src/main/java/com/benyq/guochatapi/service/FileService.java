@@ -3,8 +3,6 @@ package com.benyq.guochatapi.service;
 import com.benyq.guochatapi.base.error.ErrorCode;
 import com.benyq.guochatapi.orm.dao.FilePathDao;
 import com.benyq.guochatapi.orm.dao.UserDao;
-import com.benyq.guochatapi.orm.entity.ChatFileEntity;
-import com.benyq.guochatapi.orm.entity.FilePathEntity;
 import com.benyq.guochatapi.orm.entity.Result;
 import com.benyq.guochatapi.orm.param.AddFilePathParam;
 import com.benyq.guochatapi.utils.FileUtil;
@@ -16,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 @Service
 public class FileService {
@@ -27,7 +24,7 @@ public class FileService {
     UserDao userDao;
 
     @Transactional
-    public Result<FilePathEntity> uploadAvatar(String id, MultipartHttpServletRequest multiReq) {
+    public Result<String> uploadAvatar(String id, MultipartHttpServletRequest multiReq) {
 
         MultipartFile multipartFile = multiReq.getFile("avatar");
         if (multipartFile == null) {
@@ -49,12 +46,7 @@ public class FileService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorCode.UPLOAD_FILE_ERROR);
         }
-
-        FilePathEntity entity = new FilePathEntity();
-        entity.setFilePath(filePath);
-        entity.setType(1);
-
-        return Result.success(entity);
+        return Result.success(filePath);
     }
 
     /**

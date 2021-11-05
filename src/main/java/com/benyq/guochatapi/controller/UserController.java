@@ -1,8 +1,6 @@
 package com.benyq.guochatapi.controller;
 
 import com.benyq.guochatapi.base.annotation.ApiMethod;
-import com.benyq.guochatapi.orm.entity.ContractEntity;
-import com.benyq.guochatapi.orm.entity.FilePathEntity;
 import com.benyq.guochatapi.orm.entity.UserEntity;
 import com.benyq.guochatapi.orm.entity.Result;
 import com.benyq.guochatapi.orm.param.RegisterParam;
@@ -51,7 +49,7 @@ public class UserController {
 
     @ApiMethod("上传头像")
     @PostMapping("upload-avatar")
-    public Result<FilePathEntity> uploadAvatar(@RequestAttribute("id") String id,
+    public Result<String> uploadAvatar(@RequestAttribute("id") String id,
                                                MultipartHttpServletRequest multiReq) {
         return fileService.uploadAvatar(id, multiReq);
     }
