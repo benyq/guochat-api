@@ -111,7 +111,7 @@ public class ContractService {
 
     public Result<List<ContractEntity>> getApplyContractRecord(String uid) {
         List<ContractEntity> record1 = contractDao.getApplyContractRecord(uid);
-        List<ContractEntity> record2 = contractDao.getApplyContractRecord(uid);
+        List<ContractEntity> record2 = contractDao.getBeApplyContractRecord(uid);
         record1.addAll(record2);
         record1.sort(new Comparator<ContractEntity>() {
             @Override
