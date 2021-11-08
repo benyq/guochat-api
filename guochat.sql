@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 腾讯云数据库
+ Source Server         : guochat
  Source Server Type    : MySQL
  Source Server Version : 50736
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 26/10/2021 22:13:47
+ Date: 08/11/2021 17:21:07
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `t_contract`  (
   `update_time` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `id`(`uid`, `contract_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_file_path
@@ -40,11 +40,11 @@ DROP TABLE IF EXISTS `t_file_path`;
 CREATE TABLE `t_file_path`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `type` tinyint(1) NULL DEFAULT NULL COMMENT '文件类型， 1 头像',
+  `type` tinyint(1) NULL DEFAULT NULL COMMENT '文件类型， 0 头像',
   `update_time` bigint(20) NULL DEFAULT NULL,
   `created_time` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_user
@@ -52,7 +52,7 @@ CREATE TABLE `t_file_path`  (
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '果聊号',
+  `chat_no` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '果聊号',
   `phone` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `pwd` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `nick` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -61,6 +61,6 @@ CREATE TABLE `t_user`  (
   `created_time` bigint(20) NULL DEFAULT NULL,
   `update_time` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

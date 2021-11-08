@@ -13,7 +13,7 @@ ENV LANGUAGE zh_CN.UTF-8
 ENV LC_ALL C.UTF-8
 ENV TZ Asia/Shanghai
 # 将jar包添加到容器中并更名为app.jar
-ADD /build/libs/guochat-api.jar app.jar
+ADD ./guochat-api.jar app.jar
 # 运行jar包
 RUN bash -c 'touch /app.jar'
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Dfile.encoding=UTF-8","-Dsun.jnu.encoding=UTF-8","-jar","/app.jar"]
